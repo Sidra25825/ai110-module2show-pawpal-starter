@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import date
 
 
 @dataclass
@@ -8,6 +9,8 @@ class Task:
     title: str
     details: str
     frequency: str
+    pet_name: str
+    due_date: date
     completed: bool = False
 
     def mark_complete(self) -> None:
