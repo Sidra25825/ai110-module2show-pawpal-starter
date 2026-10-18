@@ -3,7 +3,9 @@
 ## 1. System Design
 
 **a. Initial design**
-
+1. Add a pet
+2. Schedule a task
+3. See today's tasks
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
