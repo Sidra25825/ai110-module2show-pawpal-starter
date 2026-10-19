@@ -42,9 +42,14 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
-## 🖥️ Sample Output
+## ✨ Features
 
-## Sample Output
+- **Sorting by time**: tasks are shown in order of their `HH:MM` time, no matter what order they were added in.
+- **Filtering by pet and status**: show only one pet's tasks, only completed tasks, only open tasks, or a combination.
+- **Conflict warnings**: when two tasks share the same date and time, the app shows a warning instead of failing.
+- **Daily and weekly recurrence**: marking a daily or weekly task complete automatically adds its next occurrence (+1 day or +7 days) to the same pet.
+
+## 🖥️ Sample Output
 
 ```
 Today's Schedule
@@ -93,13 +98,57 @@ tests\test_pawpal.py ......                                              [100%]
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+### Main UI features
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+Start the app with `streamlit run app.py`. The page has four parts:
+
+- **Owner**: set the owner's name.
+- **Add a Pet**: enter a name, age, and species.
+- **Schedule a Task**: pick a pet and enter a title, type, frequency (once, daily, or weekly), time, due date, and details.
+- **Schedule**: a table of tasks sorted by time, with filters for pet and status, conflict warnings above it, and a "Mark complete" button below it.
+
+### Example workflow
+
+1. Under **Add a Pet**, enter "Mochi", age 3, species "dog", and click **Add pet**. A success message confirms it.
+2. Under **Schedule a Task**, choose Mochi, enter "Breakfast", set the frequency to "daily", pick 08:00 and today's date, and click **Add task**. A success message confirms it.
+3. Add a second task for Mochi at 08:00 on the same date. The **Schedule** section now shows a yellow conflict warning naming both tasks.
+4. View today's schedule in the **Schedule** table, sorted by time. Use **Filter by pet** and **Filter by status** to narrow it down.
+5. Under **Mark a Task Complete**, choose "Breakfast" and click **Mark complete**. The table shows Breakfast as done and a new Breakfast task due tomorrow.
+
+### Key Scheduler behaviors
+
+`python main.py` runs the same logic without the UI. It adds tasks out of order, then sorts them, filters them, detects a conflict, and completes a daily task:
+
+```
+Tasks in the order they were added
+13:00 Free flight time Adam
+08:00 Feed Adam Adam
+19:00 Give Bella medicine Bella
+10:30 Bath time Bella
+
+Sorted by time
+08:00 Feed Adam Adam
+10:30 Bath time Bella
+13:00 Free flight time Adam
+19:00 Give Bella medicine Bella
+
+Filtered: Adam's tasks
+13:00 Free flight time Adam
+08:00 Feed Adam Adam
+
+Conflict check
+Warning: 'Feed Adam' (Adam) and 'Feed Bella' (Bella) are both scheduled for 2026-10-19 at 08:00
+
+Marking 'Feed Adam' complete
+Next occurrence: Feed Adam 08:00 2026-10-20 completed: False
+
+Filtered: completed tasks
+2026-10-19 08:00 Feed Adam Adam
+
+Filtered: incomplete tasks for Adam
+2026-10-19 13:00 Free flight time Adam
+2026-10-20 08:00 Feed Adam Adam
+```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
 
