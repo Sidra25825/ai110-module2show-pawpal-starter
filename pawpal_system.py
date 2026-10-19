@@ -14,7 +14,7 @@ class Task:
     completed: bool = False
 
     def mark_complete(self) -> None:
-        pass
+        self.completed = True
 
 
 @dataclass
@@ -25,7 +25,7 @@ class Pet:
     tasks: list[Task] = field(default_factory=list)
 
     def add_task(self, task: Task) -> None:
-        pass
+        self.tasks.append(task)
 
 
 class Owner:
@@ -34,10 +34,10 @@ class Owner:
         self.pets: list[Pet] = []
 
     def add_pet(self, pet: Pet) -> None:
-        pass
+        self.pets.append(pet)
 
     def get_all_tasks(self) -> list[Task]:
-        pass
+        return [task for pet in self.pets for task in pet.tasks]
 
 
 class Scheduler:
@@ -45,4 +45,4 @@ class Scheduler:
         self.owner = owner
 
     def get_todays_schedule(self) -> list[Task]:
-        pass
+        return sorted(self.owner.get_all_tasks(), key=lambda task: task.time)
