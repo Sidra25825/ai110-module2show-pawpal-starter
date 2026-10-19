@@ -34,8 +34,7 @@ Yes, my design changed after Claude reviewed my skeleton. I noticed two problems
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+My scheduler only detects conflicts when two tasks have exactly the same date and time. It does not check overlapping durations, for example a 30-minute bath at 10:30 and a feeding at 10:45. I chose this because it is simple and easy to test, and tasks in my design do not have a duration yet.
 
 ---
 
