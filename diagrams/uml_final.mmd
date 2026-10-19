@@ -1,0 +1,43 @@
+classDiagram
+    %% Final class diagram, matching pawpal_system.py.
+
+    class Owner {
+        +str name
+        +list~Pet~ pets
+        +add_pet(pet: Pet) None
+        +get_all_tasks() list~Task~
+    }
+
+    class Pet {
+        +str name
+        +int age
+        +str species
+        +list~Task~ tasks
+        +add_task(task: Task) None
+    }
+
+    class Task {
+        +str type
+        +str time
+        +str title
+        +str details
+        +str frequency
+        +str pet_name
+        +date due_date
+        +bool completed
+        +mark_complete() None
+    }
+
+    class Scheduler {
+        +Owner owner
+        +get_todays_schedule() list~Task~
+        +sort_by_time(tasks: list~Task~ = None) list~Task~
+        +filter_tasks(pet_name: str = None, completed: bool = None) list~Task~
+        +detect_conflicts() list~str~
+        +mark_task_complete(task: Task) Optional~Task~
+    }
+
+    Owner "1" --> "0..*" Pet : has
+    Pet "1" --> "0..*" Task : has
+    Scheduler --> Owner : uses
+    Scheduler ..> Task : creates next occurrence
