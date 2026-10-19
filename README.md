@@ -56,18 +56,31 @@ Today's Schedule
 ## 🧪 Testing PawPal+
 
 ```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
+python -m pytest
 ```
 
-Sample test output:
+The tests in `tests/test_pawpal.py` cover:
+
+- **Sorting**: tasks added out of order come back in chronological order.
+- **Recurrence**: completing a daily task creates a new, incomplete task due the next day.
+- **Conflict detection**: two tasks on the same date and time produce a warning.
+- **Pet with no tasks**: sorting, filtering, and conflict detection return empty lists without errors.
+
+They also check that a task can be marked complete and that adding a task increases the pet's task count.
 
 ```
-# Paste your pytest output here
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\sidra\ai110-module2show-pawpal-starter
+plugins: anyio-4.15.1
+collected 6 items
+
+tests\test_pawpal.py ......                                              [100%]
+
+============================== 6 passed in 0.03s ==============================
 ```
+
+**Confidence:** ⭐⭐⭐⭐☆ (4/5). The main scheduling behaviors are tested and pass. Weekly recurrence, filtering by completion status, and overlapping task durations are not tested yet.
 
 ## 📐 Smarter Scheduling
 
