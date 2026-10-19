@@ -51,6 +51,13 @@ Yes, my design changed after Claude reviewed my skeleton. I noticed two problems
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
 
+Claude suggested adding pet_name and due_date to Task after it reviewed my skeleton. I accepted both, because a task needs to know which pet it belongs to and which day it is due. Claude also suggested other changes, like using an Enum for frequency and adding remove methods. I did not add those yet, because I wanted to keep the design simple for now.
+
+I also noticed on my own that a repeating task should have its own completed state, so finishing it today does not make it look complete on every day.
+
+I let Claude write the logic for the four classes, and then I read each method to understand it. Claude warned me that the schedule includes all tasks, not only today's, and that times are sorted as text. I accepted that for now and plan to fix it in Phase 4.
+
+I checked the code in two ways. I ran main.py and saw a schedule sorted by time with tasks from two pets. I also ran python -m pytest and both tests passed.
 ---
 
 ## 4. Testing and Verification

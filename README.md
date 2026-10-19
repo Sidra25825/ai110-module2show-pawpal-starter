@@ -91,3 +91,14 @@ Describe your app in numbered steps so a reader can follow along without watchin
 5. <!-- Add more steps as needed -->
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+
+## Implementation Summary
+
+PawPal+ models an owner's pets and their care tasks, and builds a daily schedule from them. The logic lives in `pawpal_system.py` and has four classes:
+
+- **Task**: one care activity (type, time, title, details, frequency, pet name, due date). `mark_complete()` marks it done.
+- **Pet**: a pet's name, age, and species, plus its list of tasks. `add_task()` adds a task to that list.
+- **Owner**: the owner's name and list of pets. `add_pet()` adds a pet, and `get_all_tasks()` gathers the tasks from every pet into one list.
+- **Scheduler**: takes an `Owner`. `get_todays_schedule()` collects all of that owner's tasks and returns them sorted by time.
+
+An Owner has Pets, each Pet has Tasks, and the Scheduler reads through the Owner to build the schedule. The class diagram is in `diagrams/uml_draft.mmd`, and tests are in `tests/test_pawpal.py`.
