@@ -86,14 +86,59 @@ else:
 
 st.divider()
 
-st.subheader("Today's Schedule")
-schedule = Scheduler(owner).get_todays_schedule()
+st.subheader("Schedule")
+scheduler = Scheduler(owner)
+
+for warning in scheduler.detect_conflicts():
+    st.warning(warning)
+
+col1, col2 = st.columns(2)
+with col1:
+    pet_filter = st.selectbox("Filter by pet", ["All"] + [p.name for p in owner.pets], key="pet_filter")
+with col2:
+    status_filter = st.selectbox("Filter by status", ["All", "Not done", "Done"], key="status_filter")
+
+completed = {"All": None, "Not done": False, "Done": True}[status_filter]
+tasks = scheduler.filter_tasks(pet_name=None if pet_filter == "All" else pet_filter, completed=completed)
+schedule = scheduler.sort_by_time(tasks)
+
 if schedule:
     st.table(
         [
-            {"Time": t.time, "Task": t.title, "Pet": t.pet_name, "Type": t.type, "Done": t.completed}
+            {
+                "Date": str(t.due_date),
+                "Time": t.time,
+                "Task": t.title,
+                "Pet": t.pet_name,
+                "Type": t.type,
+                "Frequency": t.frequency,
+                "Done": t.completed,
+            }
             for t in schedule
         ]
     )
 else:
-    st.info("No tasks yet. Add one above.")
+    st.info("No tasks match. Add one above or change the filters.")
+
+st.subheader("Mark a Task Complete")
+if "complete_message" in st.session_state:
+    st.success(st.session_state.pop("complete_message"))
+
+open_tasks = scheduler.sort_by_time(scheduler.filter_tasks(completed=False))
+if not open_tasks:
+    st.info("No open tasks.")
+else:
+    task_index = st.selectbox(
+        "Task",
+        range(len(open_tasks)),
+        format_func=lambda i: f"{open_tasks[i].due_date} {open_tasks[i].time} - {open_tasks[i].title} ({open_tasks[i].pet_name})",
+        key="complete_task",
+    )
+    if st.button("Mark complete"):
+        task = open_tasks[task_index]
+        next_task = scheduler.mark_task_complete(task)
+        message = f"Completed '{task.title}'."
+        if next_task:
+            message += f" Next {task.frequency} occurrence added for {next_task.due_date}."
+        st.session_state.complete_message = message
+        st.rerun()
